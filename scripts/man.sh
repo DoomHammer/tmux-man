@@ -13,9 +13,15 @@ cmd_map["r"]="rfc"
 cmd_map["h"]="httpdoc"
 
 readonly man_len="$(get_tmux_option "@man-len" "10")"
+readonly interactive="$(get_tmux_option "@man-shell-interactive" "off")"
 
 if cmd_exists "${cmd_map["$_cmd"]}"; then
-  tmux split-window -l $man_len "${cmd_map["$_cmd"]} $@ | less -R"
+  if [[ "$interactive" == "on" ]]; then
+    cmd="${SHELL} -i -c \\\"${cmd_map["$_cmd"]} $@\\\""
+  else
+    cmd="${cmd_map["$_cmd"]} $@ | less -R"
+  fi
+  tmux split-window -l $man_len "eval $cmd"
 else
   display_msg "${cmd_map["$_cmd"]} not found in your PATH."
 fi

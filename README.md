@@ -37,6 +37,13 @@ Default `split-window` length is 10. If you change this length, set the followin
 set-option -g @man-len 15 # or your favorite length
 ```
 
+As `man` runs in non-interactive shell your `.bashrc` or `.zshrc` settings are not loaded.
+If you want to load them (for you may have an alias for man set up), set the following line in your `~/.tmux.conf`.
+
+```bash
+set-option -g @man-shell-interactive 'on'
+```
+
 # License
 
 MIT
